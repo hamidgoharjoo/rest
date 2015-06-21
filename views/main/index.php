@@ -1,0 +1,77 @@
+<?php
+use yii\helpers\Html;
+//use yii\grid\GridView;
+use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
+use kartik\grid\GridView;
+$this->registerJsFile('../../jquery-2.1.4.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+$this->registerJsFile('../../jtable/jquery.jtable.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+
+?>
+
+<?= Html::a('نمایش اطلاعات','../customer/index', [
+'title' => Yii::t('yii', 'Close'),
+    'onclick'=>"$('#close').dialog('open');//for jui dialog in my page
+     $.ajax({
+    type     :'GET',
+    cache    : false,
+    url  : '../customer/index',
+    success  : function(response) {
+        $('#close').html(response);
+    }
+    });return false;",
+                ]); 
+
+
+$script = <<< JS
+?>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#CustomerTableContainer').jtable({
+            title: 'Table of customer',
+            actions: {
+                listAction: '/customer/index',
+                createAction: '/customer/create',
+                updateAction: '/customer/update',
+                deleteAction: '/customer/delete'
+            },
+            fields: {
+                id: {
+                    key: true,
+                    list: false
+                },
+                name: {
+                    title: 'نام',
+                    width: '40%'
+                },
+                family: {
+                    title: 'نام‌خانوادگی',
+                    width: '20%'
+                },
+                mobile: {
+                    title: 'همراه',
+                    width: '30%',
+     
+                },
+		 home: {
+                    title: 'خانه',
+                    width: '20%'
+                },
+		 work: {
+                    title: 'محل کار',
+                    width: '20%'
+                }
+            }
+        });
+    });
+</script>
+<?php
+JS;
+$this->registerJs($script, View::POS_END);
+
+
+
+
+
+<div id="CustomerTableContainer"></div>
+?>
